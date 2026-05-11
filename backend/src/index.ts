@@ -1,18 +1,11 @@
-import express from 'express';
-import { createServer } from 'node:http';
-import { Server } from "socket.io";
-import { fileURLToPath } from 'node:url';
-import { dirname, join } from 'node:path';
+const express = require('express');
+const { createServer } = require('node:http');
+const { Server } = require('socket.io');
+const { join } = require('node:path');
 
 const app = express();
 const server = createServer(app);
 const PORT = 3000;
-
-const __dirname = dirname(fileURLToPath(import.meta.url));
-
-app.get('/', (req, res) => {
-  res.sendFile(join(__dirname, 'index.html'));
-});
 
 
 const io = new Server(server, {
