@@ -14,7 +14,7 @@ function App() {
         </strong>
       </h1>
       <Routes>
-        <Route path="/landing" element={<Landing />} />
+        <Route path="/" element={<Landing />} />
         <Route path="/about" element={<About />} />
         <Route path="/room" element={<Room />} />
         <Route path="*" element={<h1>404 Not Found</h1>} />
