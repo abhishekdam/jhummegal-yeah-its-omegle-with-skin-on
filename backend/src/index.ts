@@ -1,12 +1,11 @@
-const express = require('express');
-const { createServer } = require('node:http');
-const { Server } = require('socket.io');
-const { join } = require('node:path');
+import express from 'express';
+import { createServer } from 'node:http';
+import { Server } from 'socket.io';
+import { UserManager } from './managers/UserManager.js';
 
 const app = express();
 const server = createServer(app);
 const PORT = 3000;
-
 
 const io = new Server(server, {
   cors: {
@@ -14,14 +13,29 @@ const io = new Server(server, {
   }
 });
 
+const userManager = new UserManager();
+
 io.on('connection', (socket) => {
-  console.log('a user connected',socket.id);
+  console.log('A user connected:', socket.id);
+
+  // Listen for frontend room enrollment
+  socket.on('join', ({ name }: { name: string }) => {
+    console.log(`User registered: ${name} (${socket.id})`);
+    userManager.addUser(name, socket);
+  });
+
+  // Handle sudden closures or intentional disconnects
+  socket.on('disconnect', () => {
+    console.log('User disconnected:', socket.id);
+    userManager.removeUser(socket.id);
+  });
 });
 
 app.get('/', (req, res) => {
-  res.send('Hello from Express (EMS)!');
+  res.send('Hello from Express Server!');
 });
 
-app.listen(PORT, () => {
+// CRITICAL FIX: listen on server, not app, so socket.io interceptor works
+server.listen(PORT, () => {
   console.log(`Server is running at http://localhost:${PORT}`);
 });
