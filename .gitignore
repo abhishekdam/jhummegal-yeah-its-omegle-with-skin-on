@@ -24,3 +24,4 @@ backend/node_modules/side-channel-map/.DS_Store
 backend/node_modules/side-channel-weakmap/.DS_Store
 backend/node_modules/socket.io/.DS_Store
 backend/node_modules/typescript/.DS_Store
+.DS_Store
